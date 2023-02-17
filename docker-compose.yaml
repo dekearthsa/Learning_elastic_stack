@@ -1,0 +1,48 @@
+version: "3.8"
+services:
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.6.1-arm64
+    container_name: elasticsearch-node1
+    restart: always
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - ./elasticsearch-data:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+      - 9300:9300
+    networks:
+      - elastic-net
+
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:8.6.1-arm64
+    restart: always
+    environment:
+      - ELASTICSEARCH_HOSTS=http://host.docker.internal:9200   
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
+    networks:
+      - elastic-net
+
+
+volumes:
+  elasticsearch-data:
+
+networks:
+  elastic-net:
+    external: true
+    driver: bridge
