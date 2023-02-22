@@ -15,7 +15,7 @@ const elasticsearchClient = new Client({
     node: process.env.ELASTIC_NODE,
     auth:{
         // username: 'elastic',
-        // password: '91gK1cDEBYpVJ102yN1f'
+        // password: '91gK1cDEBYpVJ102yN1f' 
         // apiKey:{
         //     id:"aq1wVIYBU4mZ54EyZizN",
         //     api_key: 'yDDYmK6_S7iQ_57MeAZXNA'
@@ -59,13 +59,19 @@ mqttClient.on("connect", () => {
             jsonParse.date = Date.now();
             try{
                 console.log(jsonParse)
-                
-                // write into elastic search // 
+
                 await elasticsearchClient.create({
-                    index: 'titles',
-                    id: jsonParse.id,
-                    body: jsonParse
+                    index: "geomap",
+                    id: Date.now(),
+                    body:{
+                        machineId: jsonParse.machineId,
+                        machineName: jsonParse.machineName,
+                        value: jsonParse.value,
+                        location: jsonParse.location
+                    }
                 })
+
+                // await elasticsearchClient.indices.refresh({index: "geomap"})
                 // end write into elastic search // 
                 console.log("Created")
             }catch(err){

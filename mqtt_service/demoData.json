@@ -1,5 +1,22 @@
 {
-    "id": 12,
-    "title": "Title name",
-    "author": "Creator name"
+    "machineId":1,
+    "machineName":"IAQ",
+    "value":20,
+    "address":{
+        "building":"A",
+        "floor":15,
+        "zone":"1A"
+    },
+    "location": { 
+        "type": "Point",
+        "coordinates": [100.538938,13.806067 ]
+    }
 }
+
+// 13.769574 
+
+// 100.518770
+
+
+// "lat":13.806067,
+// "lon":100.538938
